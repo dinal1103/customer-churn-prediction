@@ -1,0 +1,13 @@
+*.pkl
+mlruns/
+.env
+data/raw/*.csv
+data/raw/*.xlsx
+models/
+venv
+__pycache__
+.vscode
+.ipynb_checkpoints
+build/
+dist/
+customer_churn_prediction_roadmap.md
