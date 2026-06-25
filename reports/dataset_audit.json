@@ -1,0 +1,25 @@
+{
+  "cell2cell_train_shape": [
+    51047,
+    58
+  ],
+  "cell2cell_holdout_shape": [
+    20000,
+    58
+  ],
+  "holdout_has_labels": false,
+  "telco_shape": [
+    7043,
+    33
+  ],
+  "cell2cell_churn_rate": 0.2881853977706819,
+  "telco_churn_rate": 0.2653698707936959,
+  "cell2cell_drop_cols": [
+    "CustomerID",
+    "NotNewCellphoneUser",
+    "CallForwardingCalls",
+    "ReferralsMadeBySubscriber",
+    "BlockedCalls"
+  ],
+  "service_area_unique": 747
+}
