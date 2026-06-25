@@ -1,0 +1,47 @@
+data:
+  cell2cell_train:   data/raw/cell2celltrain.csv
+  cell2cell_holdout: data/raw/cell2cellholdout.csv
+  telco_xlsx:        data/raw/Telco_customer_churn.xlsx
+  processed_path:    data/processed/
+  test_split:        0.20
+  random_state:      42
+
+cell2cell_drop_cols:
+  - CustomerID
+  - NotNewCellphoneUser
+  - CallForwardingCalls
+  - ReferralsMadeBySubscriber
+  - BlockedCalls
+
+telco_drop_cols:
+  - CustomerID
+  - Count
+  - Country
+  - State
+  - City
+  - Zip Code
+  - Lat Long
+  - Latitude
+  - Longitude
+  - Churn Label
+  - Churn Reason    # EDA only — post-churn label, not a feature
+
+model:
+  experiment_name:        churn-cell2cell-v1
+  registered_model_name:  ChurnPredictor
+  threshold:              0.35
+  mlflow_tracking_uri:    http://localhost:5000
+
+training:
+  cv_folds:        5
+  optuna_trials:   100
+  optuna_timeout:  600
+
+monitoring:
+  drift_threshold:                   0.30
+  performance_degradation_threshold: 0.03
+  retrain_after_days:                30
+
+business:
+  fp_cost:  200
+  fn_cost:  1000
