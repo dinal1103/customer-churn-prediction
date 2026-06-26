@@ -309,6 +309,10 @@ def get_churn_reasons(config: dict):
 if __name__ == "__main__":
 
     config = load_config()
+    PROCESSED_DATA_DIR.mkdir(
+        parents=True,
+        exist_ok=True
+    )
 
     # Load Cell2Cell
     X, y = load_cell2cell_train(

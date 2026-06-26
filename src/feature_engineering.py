@@ -23,6 +23,7 @@ class Cell2CellFeatureEngineer(BaseEstimator, TransformerMixin):
         self.prizm_churn_rate_:        dict = {}
         self.credit_churn_rate_:       dict = {}
         self.global_mean_: float = 0.288  # Cell2Cell training churn rate
+        self.revenue_p75_: float | None = None
         self.fitted_: bool = False
 
     def fit(self, X: pd.DataFrame, y=None):
@@ -32,6 +33,11 @@ class Cell2CellFeatureEngineer(BaseEstimator, TransformerMixin):
             y_vals = y.values if hasattr(y, 'values') else np.array(y)
             df['__target__'] = y_vals
             self.global_mean_ = float(y_vals.mean())
+            # Learn revenue threshold from TRAINING data only
+            if "MonthlyRevenue" in df.columns:
+                self.revenue_p75_ = float(
+                    df["MonthlyRevenue"].quantile(0.75)
+                )
 
             encoding_map = {
                 'ServiceArea': 'service_area_churn_rate_',
@@ -57,6 +63,7 @@ class Cell2CellFeatureEngineer(BaseEstimator, TransformerMixin):
         # ──────────────────────────────────────────────────────────────────────
 
         # Escalated customer: called care AND retention team
+        
         if all(c in df for c in ['CustomerCareCalls','RetentionCalls']):
             df['escalated_customer'] = (
                 (df['CustomerCareCalls'] >= self.care_calls_threshold) &
@@ -128,12 +135,24 @@ class Cell2CellFeatureEngineer(BaseEstimator, TransformerMixin):
                 df['PercChangeMinutes'] < -50).astype(int)
 
         # Premium dissatisfied: high revenue + high care calls
-        if all(c in df for c in ['MonthlyRevenue','CustomerCareCalls']):
-            rev_p75 = df['MonthlyRevenue'].quantile(0.75)
-            df['premium_dissatisfied'] = (
-                (df['MonthlyRevenue'] > rev_p75) &
-                (df['CustomerCareCalls'] >= 2)
+        if all(c in df for c in ['MonthlyRevenue', 'CustomerCareCalls']):
+        
+            revenue_threshold = (
+                self.revenue_p75_
+                if self.revenue_p75_ is not None
+                else float(df["MonthlyRevenue"].quantile(0.75))
+            )
+
+            df["premium_dissatisfied"] = (
+                (df["MonthlyRevenue"] > revenue_threshold) &
+                (df["CustomerCareCalls"] >= 2)
             ).astype(int)
+        #if all(c in df for c in ['MonthlyRevenue','CustomerCareCalls']):
+        #    rev_p75 = df['MonthlyRevenue'].quantile(0.75)
+        #    df['premium_dissatisfied'] = (
+        #        (df['MonthlyRevenue'] > rev_p75) &
+        #        (df['CustomerCareCalls'] >= 2)
+        #    ).astype(int)
 
         # ──────────────────────────────────────────────────────────────────────
         # TIER 4: Subscription and device signals
