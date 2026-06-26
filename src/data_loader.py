@@ -4,10 +4,10 @@ import yaml
 from sklearn.model_selection import train_test_split
 from loguru import logger
 import joblib
-
+from src.paths import PROCESSED_DATA_DIR,RAW_DATA_DIR,CONFIG_DIR
 
 def load_config() -> dict:
-    with open("config/config.yaml") as f:
+    with open(CONFIG_DIR / "config.yaml", "r") as f:
         return yaml.safe_load(f)
 
 
@@ -27,8 +27,8 @@ def load_cell2cell_train(config: dict) -> tuple[pd.DataFrame, pd.Series]:
     logger.info("Loading Cell2Cell training data...")
 
     df = pd.read_csv(
-        config['data']['cell2cell_train']
-    )
+        RAW_DATA_DIR / config["data"]["cell2cell_train"]
+)
 
     logger.info(
         f"Loaded: {df.shape}"
@@ -104,8 +104,8 @@ def load_cell2cell_holdout(config: dict):
     )
 
     df = pd.read_csv(
-        config['data']['cell2cell_holdout']
-    )
+        RAW_DATA_DIR / config["data"]["cell2cell_holdout"]
+)
 
     if 'Churn' in df.columns:
 
@@ -173,7 +173,7 @@ def load_telco(config: dict):
     )
 
     df = pd.read_excel(
-        config['data']['telco_xlsx']
+        RAW_DATA_DIR / config["data"]["telco_xlsx"]
     )
 
     logger.info(
@@ -282,7 +282,7 @@ def split_data(
 def get_churn_reasons(config: dict):
 
     df = pd.read_excel(
-        config['data']['telco_xlsx']
+        RAW_DATA_DIR / config["data"]["telco_xlsx"]
     )
 
     reasons = (
@@ -332,19 +332,18 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------
 
     joblib.dump(
-
         (
             X_train,
             X_test,
             y_train,
             y_test
         ),
-
-        "data/processed/cell2cell_split.pkl"
+        PROCESSED_DATA_DIR / "cell2cell_split.pkl"
+        
     )
 
     logger.info(
-        "Saved: data/processed/cell2cell_split.pkl"
+        "Saved: PROCESSED_DATA_DIR / cell2cell_split.pkl"
     )
 
     logger.info(
@@ -402,11 +401,11 @@ if __name__ == "__main__":
             y_telco
         ),
 
-        "data/processed/telco_clean.pkl"
+        PROCESSED_DATA_DIR /"telco_clean.pkl"
     )
 
     logger.info(
-        "Saved: data/processed/telco_clean.pkl"
+        "Saved: PROCESSED_DATA_DIR /telco_clean.pkl"
     )
 
     logger.info(

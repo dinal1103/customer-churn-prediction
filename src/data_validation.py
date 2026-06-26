@@ -44,6 +44,7 @@ from loguru import logger
 # Save reports
 import json
 import os
+from src.paths import REPORTS_DIR
 
 
 # ============================================================
@@ -730,7 +731,7 @@ if __name__ == "__main__":
     )
 
     with open(
-        "reports/validation_report.json",
+        REPORTS_DIR/"validation_report.json",
         "w"
     ) as f:
 

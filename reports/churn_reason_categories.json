@@ -1,0 +1,19 @@
+{
+  "competitor": [
+    "Competitor offered higher download speeds",
+    "Competitor offered more data",
+    "Competitor made better offer",
+    "Competitor had better devices"
+  ],
+  "service_quality": [
+    "Attitude of support person",
+    "Attitude of service provider",
+    "Network reliability",
+    "Product dissatisfaction",
+    "Service dissatisfaction"
+  ],
+  "pricing": [
+    "Price too high",
+    "Extra data charges"
+  ]
+}

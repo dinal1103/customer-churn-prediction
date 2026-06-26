@@ -1,7 +1,7 @@
 data:
-  cell2cell_train:   data/raw/cell2celltrain.csv
-  cell2cell_holdout: data/raw/cell2cellholdout.csv
-  telco_xlsx:        data/raw/Telco_customer_churn.xlsx
+  cell2cell_train: cell2celltrain.csv
+  cell2cell_holdout: cell2cellholdout.csv
+  telco_xlsx: Telco_customer_churn.xlsx
   processed_path:    data/processed/
   test_split:        0.20
   random_state:      42
