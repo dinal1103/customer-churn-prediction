@@ -1,0 +1,23 @@
+{
+  "cell2cell": {
+    "shape_ok": true,
+    "shape": [
+      51047,
+      52
+    ],
+    "churn_rate": 0.2882,
+    "no_target_leak": true,
+    "dropped_cols_absent": true,
+    "bug_fixes_applied": true,
+    "checks_passed": 29,
+    "checks_failed": 0,
+    "all_passed": true
+  },
+  "telco": {
+    "shape_ok": true,
+    "churn_rate": 0.2654,
+    "checks_passed": 7,
+    "checks_failed": 0,
+    "all_passed": true
+  }
+}
